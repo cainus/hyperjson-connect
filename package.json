@@ -27,7 +27,7 @@
     "url": "https://github.com/cainus/hyperjson-connect/issues"
   },
   "dependencies": {
-    "underscore": "~1.5.2",
-    "hyperjson": "0.0.1"
+    "underscore": "1.5.2",
+    "hyperjson": "0.0.2"
   }
 }
