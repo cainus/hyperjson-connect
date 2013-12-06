@@ -1,6 +1,6 @@
 {
   "name": "hyperjson-connect",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "connect middleware for hyperjson support",
   "main": "index.js",
   "scripts": {
@@ -26,8 +26,22 @@
   "bugs": {
     "url": "https://github.com/cainus/hyperjson-connect/issues"
   },
+  "devDependencies": {
+    "mocha": "1.15.1",
+    "connect": "2.11.2",
+    "express": "3.4.6",
+    "should": "2.1.1",
+    "request": "2.28.0",
+    "istanbul": "0.1.46",
+    "jshint": "2.3.0"
+  },
   "dependencies": {
     "underscore": "1.5.2",
-    "hyperjson": "0.0.1"
+    "hyperjson": "0.0.1",
+    "urlgrey": "0.3.2"
+  },
+  "homepage": "https://github.com/cainus/hyperjson-connect",
+  "directories": {
+    "test": "test"
   }
 }
