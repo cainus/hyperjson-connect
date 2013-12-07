@@ -59,12 +59,12 @@ HyperJsonCollection.prototype.linkEach = function(rel, cb) {
 };
 
 
-var send = function(req, res, jsonObj, shouldAddDefaultLinks) {
+var send = function(req, res, jsonObj, options) {
   if (!(jsonObj instanceof HyperJson)) {
     throw new Error("send is for hyperjson objects only");
   }
-  if (shouldAddDefaultLinks){
-    addDefaultLinks(req, res, jsonObj);
+  if (options.defaultLinks){
+    addDefaultLinks(req, res, jsonObj, options);
   }
   res.setHeader("content-type", "application/json; charset=utf-8");
   var body = JSON.stringify(jsonObj.toObject());
@@ -72,7 +72,7 @@ var send = function(req, res, jsonObj, shouldAddDefaultLinks) {
   res.end(body);
 };
 
-var addDefaultLinks = function(req, res, json) {
+var addDefaultLinks = function(req, res, json, options) {
   var current, parent;
   if (json instanceof HyperJson) {
     current = json.toObject();
@@ -81,7 +81,14 @@ var addDefaultLinks = function(req, res, json) {
   }
   if (!current._links || !current._links.parent) {
     try {
-      parent = urlgrey(req.url).parent();
+      var base = options.protocol + 
+        '://' +
+        (req.host || 'localhost');
+      parent = urlgrey(base)
+                .hostname(req.headers.host)
+                .path(req.url)
+                .parent()
+                .toString();
       json.link("parent", parent);
     } catch (ex) {
       if (ex.message !== "The current path has no parent path") {
@@ -94,16 +101,17 @@ var addDefaultLinks = function(req, res, json) {
 
 var factory = function(options){
   options = options || {};
-  var addDefaultLinks = options.defaultLinks || true;
+  options.defaultLinks = options.defaultLinks || true;
   var objectName = options.objectName || "object";
   var collectionName = options.collectionName || "collection";
+  options.protocol = options.protocol || "http";
 
   var middleware = function(req, res, next) {
     res[objectName] = function(obj) {
       var json;
       json = new HyperJson(obj);
       json.send = function() {
-        return send(req, res, json, addDefaultLinks);
+        return send(req, res, json, options);
       };
       return json;
     };
@@ -111,7 +119,7 @@ var factory = function(options){
       var json;
       json = new HyperJsonCollection(objArr, key);
       json.send = function() {
-        return send(req, res, json, addDefaultLinks);
+        return send(req, res, json, options);
       };
       return json;
     };

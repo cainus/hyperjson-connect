@@ -100,7 +100,7 @@ describe("the middleware", function(){
     beforeEach(function(done){
       app = express();
       app.use(hyperjson());
-      app.use(function(req, res){
+      app.get('/', function(req, res){
         return setup(res);
       });
       server = http.createServer(app)
@@ -113,6 +113,42 @@ describe("the middleware", function(){
     });
     it("can output collections", function(done){
       testRoot(done);
+    });
+    it("adds a parent link to sub resources", function(done){
+      app.get("/api/resource", function(req, res){
+        res.object({"test" : true}).send();
+      });
+      request({uri:baseUrl + '/api/resource', method:'get'}, function(err,response,body){
+        if (err){should.fail(err);}
+        response.statusCode.should.equal(200);
+        var expected = {
+          test: true,
+          _links: {
+            parent: {
+              href: 'http://localhost:1337/api' } } };
+        JSON.parse(body).should.eql(expected);
+        done();
+      });
+    });
+    it("uses the host header for creating default links", function(done){
+      app.get("/api/resource", function(req, res){
+        res.object({"test" : true}).send();
+      });
+      request({ uri:baseUrl + '/api/resource', 
+                method:'get', 
+                headers : {
+                  'host' : "zombo.com:1337"
+                }}, function(err,response,body){
+        if (err){should.fail(err);}
+        response.statusCode.should.equal(200);
+        var expected = {
+          test: true,
+          _links: {
+            parent: {
+              href: 'http://zombo.com:1337/api' } } };
+        JSON.parse(body).should.eql(expected);
+        done();
+      });
     });
   });
   describe("with connect", function(){
