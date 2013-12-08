@@ -150,6 +150,24 @@ describe("the middleware", function(){
         done();
       });
     });
+    it("uses localhost for links if there is no host header", function(done){
+      app.get("/api/resource", function(req, res){
+        res.object({"test" : true}).send();
+      });
+      request({ uri:baseUrl + '/api/resource', 
+                method:'get'
+                }, function(err,response,body){
+        if (err){should.fail(err);}
+        response.statusCode.should.equal(200);
+        var expected = {
+          test: true,
+          _links: {
+            parent: {
+              href: 'http://localhost:1337/api' } } };
+        JSON.parse(body).should.eql(expected);
+        done();
+      });
+    });
   });
   describe("with connect", function(){
     beforeEach(function(done){
@@ -171,3 +189,4 @@ describe("the middleware", function(){
     });
   });
 });
+
