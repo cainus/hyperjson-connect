@@ -96,6 +96,47 @@ describe("the middleware", function(){
       testRoot(done);
     });
   });
+  
+
+  describe("with defaultLinks set to false on express", function(){
+    beforeEach(function(done){
+      app = express();
+      app.use(hyperjson({defaultLinks : false}));
+      app.get('/', function(req, res){
+        return setup(res);
+      });
+      server = http.createServer(app)
+                  .listen(port, done);
+    });
+    afterEach(function(done){
+      server.close(function(){
+        done();
+      });
+    });
+    it("doesn;t add a parent link to sub resources", function(done){
+      app.get("/api/resource", function(req, res){
+        res.object({"test" : true}).send();
+      });
+      request({uri:baseUrl + '/api/resource', method:'get'}, function(err,response,body){
+        if (err){should.fail(err);}
+        response.statusCode.should.equal(200);
+        var expected = {
+          test: true
+        };
+        JSON.parse(body).should.eql(expected);
+        done();
+      });
+    });
+  });
+
+
+
+
+
+
+
+
+
   describe("with express", function(){
     beforeEach(function(done){
       app = express();

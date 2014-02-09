@@ -50,7 +50,9 @@ var addDefaultLinks = function(req, res, json, options) {
 
 var factory = function(options){
   options = options || {};
-  options.defaultLinks = options.defaultLinks || true;
+  if (options.defaultLinks !== false){
+    options.defaultLinks = true;
+  }
   var objectName = options.objectName || "object";
   var collectionName = options.collectionName || "collection";
   options.protocol = options.protocol || "http";

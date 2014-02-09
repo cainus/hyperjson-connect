@@ -1,6 +1,6 @@
 {
   "name": "hyperjson-connect",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "connect middleware for hyperjson support",
   "main": "index.js",
   "scripts": {
