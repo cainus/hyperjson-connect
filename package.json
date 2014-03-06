@@ -40,7 +40,7 @@
   "dependencies": {
     "underscore": "1.5.2",
     "hyperjson": "0.0.1",
-    "urlgrey": "0.3.2"
+    "urlgrey": "0.3.3"
   },
   "homepage": "https://github.com/cainus/hyperjson-connect",
   "directories": {
