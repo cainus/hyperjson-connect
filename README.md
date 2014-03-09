@@ -16,7 +16,45 @@ This middleware provides a fluent interface for adding links to json api respons
 
 This sort of library is useful if you want to create hypermedia apis using json.
 
-## A few examples:
+## Setup:
+
+Add this middleware to your connect or express app like any other
+middleware for the default settings:
+
+```javascript
+var hyperjsonConnect = require('hyperjson-connect');
+app.use(hyperjsonConnect());
+```
+
+There is also an optional `options` parameter that lets you specify some
+particular options:
+
+* `defaultLinks` (boolean, defaults to true) : when true, 'parent' links
+will automatically be added to every payload to point up one directory in your url.
+
+* `protocol` (string, defaults to 'http') : All links will start with this
+protocol by default.
+
+* `objectName` (string, defaults to 'object') : you can change
+  res.object() to res.whateverYouWant() by specifying the new name here.
+
+* `collectionName` (string, defaults to 'collection') : you can change
+  res.collection() to res.whateverYouWant() by specifying the new name
+here.
+
+### example:
+
+```javascript
+var hyperjsonConnect = require('hyperjson-connect');
+app.use(hyperjsonConnect({
+  defaultLinks : false,
+  protocol : 'https',
+  objectName : 'single',
+  collectionName : 'list'
+}));
+```
+
+## Usage:
 
 ### res.object()
 
