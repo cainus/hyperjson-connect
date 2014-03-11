@@ -24,7 +24,9 @@ var testRoot = function(done){
            "lastname": "Ramone",
            "_links": {
              "update": {
-               "href": "/artists/1"
+               "href": "/artists/1",
+               "method": "PUT",
+               "schema": {}
              }
            }
          },
@@ -33,18 +35,15 @@ var testRoot = function(done){
            "lastname": "Strummer",
            "_links": {
              "update": {
-               "href": "/artists/2"
+               "href": "/artists/2",
+               "method": "PUT",
+               "schema": {}
              }
            }
          },
          {
            "firstname": "Neil",
-           "lastname": "Young",
-           "_links": {
-             "update": {
-               "href": "/artists/3"
-             }
-           }
+           "lastname": "Young"
          }
        ],
       "_links": {
@@ -59,7 +58,7 @@ var testRoot = function(done){
     response.headers['content-type']
       .should.equal('application/json; charset=utf-8');
     response.headers['content-length']
-      .should.equal('310');
+      .should.equal('322');
     done();
   });
 };
@@ -69,7 +68,11 @@ function setup(res){
     .linkEach("update", function(item){
       return "/artists/" + item.id;
     },
-    {method : "PUT", schema : {}})
+    {
+      method : "PUT",
+      schema : {},
+      when: function(a) { return a.firstname[0] === "J"; }
+    })
     .each(function(item){
       delete item.id;
       return item;
@@ -96,7 +99,7 @@ describe("the middleware", function(){
       testRoot(done);
     });
   });
-  
+
 
   describe("with defaultLinks set to false on express", function(){
     beforeEach(function(done){
@@ -175,8 +178,8 @@ describe("the middleware", function(){
       app.get("/api/resource", function(req, res){
         res.object({"test" : true}).send();
       });
-      request({ uri:baseUrl + '/api/resource', 
-                method:'get', 
+      request({ uri:baseUrl + '/api/resource',
+                method:'get',
                 headers : {
                   'host' : "zombo.com:1337"
                 }}, function(err,response,body){
@@ -195,7 +198,7 @@ describe("the middleware", function(){
       app.get("/api/resource", function(req, res){
         res.object({"test" : true}).send();
       });
-      request({ uri:baseUrl + '/api/resource', 
+      request({ uri:baseUrl + '/api/resource',
                 method:'get'
                 }, function(err,response,body){
         if (err){should.fail(err);}
