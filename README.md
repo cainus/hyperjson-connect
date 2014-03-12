@@ -157,8 +157,9 @@ res.object({thisis : "a test"})
 Check out the [hyper+json spec](https://github.com/cainus/hyper-json-spec) if you want to read more about these kinds of links.
 
 ### res.collection()
-`res.collection()` has all the same features of res.object(), except it takes an array of objects instead of just one object, and returns them wrapped in a json object that is also linkable.  Here's some eaxmple output:
+`res.collection()` has all the same features of res.object(), except it takes an array of objects instead of just one object, and returns them wrapped in a json object that is also linkable.  You can check out the [hyper-json library](https://github.com/cainus/hyper-json) for more details, but here are some simple examples.
 
+Basic usage:
 ```javascript
 res.collection([{test:1}, {test:2}]).send();
     /*
@@ -170,6 +171,70 @@ res.collection([{test:1}, {test:2}]).send();
     */
 ```
 
+With links:
+```javascript
+res.collection([{test:1}, {test:2}])
+.linkEach('delete', function(obj){ return '/delete/' + obj.test })
+.link('home', '/home')
+.send();
+    /*
+      {
+        "_items" : [
+          {
+            "test" : 1,
+            "_links": { delete: { "href": "/delete/1" } }
+          }, 
+          {
+            "test" : 2,
+            "_links": { "delete" : { "href": "/delete/2" } }
+          }
+        ],
+        "_links" : { "home" : { "href" : "/home" } }
+      }
+    */
+```
+
+With links:
+```javascript
+res.collection([{test:1}, {test:2}])
+.linkEach('delete', function(obj){ return '/delete/' + obj.test })
+.link('home', '/home'. {method: "DELETE", schema: {})
+.send();
+    /*
+      {
+        "_items" : [
+          {
+            "test" : 1,
+            "_links": { delete: { "href": "/delete/1" } }
+          }, 
+          {
+            "test" : 2,
+            "_links": { "delete" : { "href": "/delete/2" } }
+          }
+        ],
+        "_links" : { "home" : { "href" : "/home", method: "DELETE", schema: {} } }
+      }
+    */
+```
+With conditional links:
+```javascript
+res.collection([{test:1}, {test:2}])
+.linkEach('delete', function(obj){ return '/delete/' + obj.test }, {when: function (obj) { return obj.test % 2 }})
+.send();
+    /*
+      {
+        "_items" : [
+          {
+            "test" : 1,
+            "_links": { delete: { "href": "/delete/1" } }
+          }, 
+          {
+            "test" : 2
+          }
+        ]
+      }
+    */
+```
 
 
 
