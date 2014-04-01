@@ -41,11 +41,11 @@ that forwards the protocol as a header:
 ```javascript
   var hyperjsonConnect = require('hyperjson-connect');
   var protocolFunction = function(req){
-  return req.headers['x-forwarded-proto'] ||
-         req.headers['x-forwarded-protocol'] ||
-         'http';
+    return req.headers['x-forwarded-proto'] ||
+           req.headers['x-forwarded-protocol'] ||
+           'http';
   };
-  app.use(hyperjson({protocol : protocolFunction}));
+  app.use(hyperjsonConnect({protocol : protocolFunction}));
 ```
 
 * `objectName` (string, defaults to 'object') : you can change
