@@ -133,11 +133,46 @@ describe("the middleware", function(){
   });
 
 
-
-
-
-
-
+  describe("with options.protocol set to a function", function(){
+    beforeEach(function(done){
+      app = express();
+      var protocolFunction = function(req){
+        return req.headers['x-forwarded-proto'] ||
+               req.headers['x-forwarded-protocol'] ||
+               'http';
+      };
+      app.use(hyperjson({protocol : protocolFunction}));
+      app.get('/', function(req, res){
+        return setup(res);
+      });
+      server = http.createServer(app)
+                  .listen(port, done);
+    });
+    afterEach(function(done){
+      server.close(function(){
+        done();
+      });
+    });
+    it("executes the function to determine the correct protocol", function(done){
+      app.get("/api/resource", function(req, res){
+        res.object({"test" : true}).send();
+      });
+      request({uri:baseUrl + '/api/resource', method:'get', headers : {'x-forwarded-proto' : 'https'}}, function(err,response,body){
+        if (err){should.fail(err);}
+        response.statusCode.should.equal(200);
+        var expected = {
+          "test": true,
+          "_links": {
+            "parent": {
+              "href": "https://localhost:1337/api"
+            }
+          }
+        };
+        JSON.parse(body).should.eql(expected);
+        done();
+      });
+    });
+  });
 
 
   describe("with express", function(){

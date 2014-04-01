@@ -30,7 +30,11 @@ var addDefaultLinks = function(req, res, json, options) {
       if (!!req.headers.host){
         host = req.headers.host;
       }
-      var base = options.protocol + 
+      protocol = options.protocol;
+      if (_.isFunction(protocol)){
+        protocol = protocol(req);
+      }
+      var base = protocol + 
         '://' +
         (req.headers.host || 'localhost');
       parent = urlgrey(base)
@@ -56,6 +60,7 @@ var factory = function(options){
   var objectName = options.objectName || "object";
   var collectionName = options.collectionName || "collection";
   options.protocol = options.protocol || "http";
+  
 
   var middleware = function(req, res, next) {
     res[objectName] = function(obj) {

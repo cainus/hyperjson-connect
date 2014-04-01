@@ -32,8 +32,21 @@ particular options:
 * `defaultLinks` (boolean, defaults to true) : when true, 'parent' links
 will automatically be added to every payload to point up one directory in your url.
 
-* `protocol` (string, defaults to 'http') : All links will start with this
-protocol by default.
+* `protocol` (string or function, defaults to 'http') : All links will start with this
+protocol by default.  If `protocol` is a function, the function should
+take a request object as its only parameter and return the protocol as a
+string.  For example, I often use this to when behind a load balancer
+that forwards the protocol as a header:  
+
+```javascript
+  var hyperjsonConnect = require('hyperjson-connect');
+  var protocolFunction = function(req){
+  return req.headers['x-forwarded-proto'] ||
+         req.headers['x-forwarded-protocol'] ||
+         'http';
+  };
+  app.use(hyperjson({protocol : protocolFunction}));
+```
 
 * `objectName` (string, defaults to 'object') : you can change
   res.object() to res.whateverYouWant() by specifying the new name here.
