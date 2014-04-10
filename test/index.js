@@ -116,7 +116,7 @@ describe("the middleware", function(){
         done();
       });
     });
-    it("doesn;t add a parent link to sub resources", function(done){
+    it("doesn't add a `up` link to sub resources", function(done){
       app.get("/api/resource", function(req, res){
         res.object({"test" : true}).send();
       });
@@ -163,7 +163,7 @@ describe("the middleware", function(){
         var expected = {
           "test": true,
           "_links": {
-            "parent": {
+            "up": {
               "href": "https://localhost:1337/api"
             }
           }
@@ -193,7 +193,7 @@ describe("the middleware", function(){
     it("can output collections", function(done){
       testRoot(done);
     });
-    it("adds a parent link to sub resources", function(done){
+    it("adds an up link to sub resources", function(done){
       app.get("/api/resource", function(req, res){
         res.object({"test" : true}).send();
       });
@@ -203,7 +203,7 @@ describe("the middleware", function(){
         var expected = {
           test: true,
           _links: {
-            parent: {
+            up : {
               href: 'http://localhost:1337/api' } } };
         JSON.parse(body).should.eql(expected);
         done();
@@ -223,7 +223,7 @@ describe("the middleware", function(){
         var expected = {
           test: true,
           _links: {
-            parent: {
+            up : {
               href: 'http://zombo.com:1337/api' } } };
         JSON.parse(body).should.eql(expected);
         done();
@@ -241,7 +241,7 @@ describe("the middleware", function(){
         var expected = {
           test: true,
           _links: {
-            parent: {
+            up : {
               href: 'http://localhost:1337/api' } } };
         JSON.parse(body).should.eql(expected);
         done();

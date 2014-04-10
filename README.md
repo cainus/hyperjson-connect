@@ -29,7 +29,7 @@ app.use(hyperjsonConnect());
 There is also an optional `options` parameter that lets you specify some
 particular options:
 
-* `defaultLinks` (boolean, defaults to true) : when true, 'parent' links
+* `defaultLinks` (boolean, defaults to true) : when true, 'up' links
 will automatically be added to every payload to point up one directory in your url.
 
 * `protocol` (string or function, defaults to 'http') : All links will start with this
@@ -132,7 +132,7 @@ This can be called multiple times to add more links.
 ```javascript
 res.object({thisis : "a test"})
   .link("self", "http://localhost:8080/api/test")
-  .link("parent", "http://localhost:8080/api/")
+  .link("up", "http://localhost:8080/api/")
   .link("kid", "http://localhost:8080/api/kid1")
   .link("kid", "http://localhost:8080/api/kid2")
   .send();                 /* { thisis : "a test", 
@@ -140,7 +140,7 @@ res.object({thisis : "a test"})
                                       self : {
                                         href : "http://localhost:8080/api/test"
                                       },
-                                      parent : {
+                                      up : {
                                         href : "http://localhost:8080/api/"
                                       },
                                       kid : [{

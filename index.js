@@ -18,13 +18,13 @@ var send = function(req, res, jsonObj, options) {
 };
 
 var addDefaultLinks = function(req, res, json, options) {
-  var current, parent;
+  var current, up;
   if (json instanceof HyperJson) {
     current = json.toObject();
   } else {
     current = json;
   }
-  if (!current._links || !current._links.parent) {
+  if (!current._links || !current._links.up) {
     try {
       var host = 'localhost';
       if (!!req.headers.host){
@@ -37,12 +37,12 @@ var addDefaultLinks = function(req, res, json, options) {
       var base = protocol + 
         '://' +
         (req.headers.host || 'localhost');
-      parent = urlgrey(base)
+      up = urlgrey(base)
                 .hostname(req.headers.host || 'localhost')
                 .path(req.url)
                 .parent()
                 .toString();
-      json.link("parent", parent);
+      json.link("up", up);
     } catch (ex) {
       if (ex.message !== "The current path has no parent path") {
         throw ex;
