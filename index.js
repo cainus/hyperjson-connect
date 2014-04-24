@@ -11,7 +11,7 @@ var send = function(req, res, jsonObj, options) {
   if (options.defaultLinks){
     addDefaultLinks(req, res, jsonObj, options);
   }
-  res.setHeader("content-type", "application/json; charset=utf-8");
+  res.setHeader("content-type", "application/json");
   var body = JSON.stringify(jsonObj.toObject());
   res.setHeader("content-length", Buffer.byteLength(body));
   res.end(body);

@@ -56,7 +56,7 @@ var testRoot = function(done){
     parsed.should.eql(expected);
     response.statusCode.should.equal(200);
     response.headers['content-type']
-      .should.equal('application/json; charset=utf-8');
+      .should.equal('application/json');
     response.headers['content-length']
       .should.equal('322');
     done();
