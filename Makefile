@@ -12,10 +12,10 @@ test-cov:
 	@NODE_ENV=test ./node_modules/.bin/istanbul cover \
 	./node_modules/mocha/bin/_mocha -- -R $(REPORTER) --check-leaks
 
-test-coveralls:
+test-codecov:
 	$(MAKE) test
 	@NODE_ENV=test ./node_modules/.bin/istanbul cover \
 	./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec --check-leaks
-	cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js || :  # don't fail if coveralls.io is down
+	cat ./coverage/lcov.info | ./node_modules/codecov.io/bin/codecov.io.js || : # don't fail if coveralls.io is down
 
 .PHONY: test
