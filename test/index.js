@@ -5,6 +5,7 @@ var request = require('request');
 var should = require('should');
 var hyperjson = require('../index');
 var server;
+var app;
 var port = 1337;
 var baseUrl = "http://localhost:1337";
 var artists = [

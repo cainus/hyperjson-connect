@@ -30,7 +30,7 @@ var addDefaultLinks = function(req, res, json, options) {
       if (!!req.headers.host){
         host = req.headers.host;
       }
-      protocol = options.protocol;
+      var protocol = options.protocol;
       if (_.isFunction(protocol)){
         protocol = protocol(req);
       }
