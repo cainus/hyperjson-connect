@@ -6,7 +6,7 @@ This is a connect-compatible middleware for adding support for easily creating j
 
 
 [![Build Status](https://travis-ci.org/cainus/hyperjson-connect.png?branch=master)](https://travis-ci.org/cainus/hyperjson-connect)
-[![codecov.io](https://codecov.io/github/cainus/codecov.io/coverage.svg?branch=master)](https://codecov.io/github/cainus/codecov.io?branch=master)
+[![codecov.io](https://codecov.io/github/cainus/hyperjson-connect/coverage.svg?branch=master)](https://codecov.io/github/cainus/hyperjson-connect?branch=master)
 
 [![NPM](https://nodei.co/npm/hyperjson-connect.png)](https://nodei.co/npm/hyperjson-connect/)
 
