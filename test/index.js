@@ -8,11 +8,6 @@ var server;
 var app;
 var port = 1337;
 var baseUrl = "http://localhost:1337";
-var artists = [
-  {"id" : 1, "firstname" : "Joey", "lastname" : "Ramone"},
-  {"id" : 2, "firstname" : "Joe", "lastname" : "Strummer"},
-  {"id" : 3, "firstname" : "Neil", "lastname" : "Young"}
-];
 
 
 var testRoot = function(done){
@@ -65,6 +60,11 @@ var testRoot = function(done){
 };
 
 function setup(res){
+  var artists = [
+    {"id" : 1, "firstname" : "Joey", "lastname" : "Ramone"},
+    {"id" : 2, "firstname" : "Joe", "lastname" : "Strummer"},
+    {"id" : 3, "firstname" : "Neil", "lastname" : "Young"}
+  ];
   res.collection(artists)
     .linkEach("update", function(item){
       return "/artists/" + item.id;

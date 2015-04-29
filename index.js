@@ -5,11 +5,10 @@ var HyperJsonCollection = require('./HyperJsonCollection');
 
 var send = function(req, res, hyperjson, options) {
   var obj = hyperjson.toObject();
-  obj._links = obj._links || {};
   
-  if (options.defaultLinks && !obj._links.up && req.uri.path() !== "/"){
+  if (options.defaultLinks && !(obj._links || {}).up && req.url.length > 1){
     var host = req.headers.host || 'localhost';
-    var protocol = _.isFunction(protocol) ? options.protocol(req) : (options.protocol() || "http");
+    var protocol = _.isFunction(options.protocol) ? options.protocol(req) : (options.protocol || "http");
     var upLink = urlgrey([protocol, "://", host].join(""))
       .hostname(host)
       .path(req.url)
@@ -20,7 +19,7 @@ var send = function(req, res, hyperjson, options) {
   }
 
   var body = JSON.stringify(obj);
-  res.setHeader("content-type", "application/json; charset=utf-8");
+  res.setHeader("content-type", "application/json");
   res.setHeader("content-length", Buffer.byteLength(body));
   res.end(body);
 };
