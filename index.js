@@ -3,53 +3,26 @@ var urlgrey = require("urlgrey");
 var _ = require("underscore");
 var HyperJsonCollection = require('./HyperJsonCollection');
 
+var send = function(req, res, hyperjson, options) {
+  var obj = hyperjson.toObject();
+  obj._links = obj._links || {};
+  
+  if (options.defaultLinks && !obj._links.up && req.uri.path() !== "/"){
+    var host = req.headers.host || 'localhost';
+    var protocol = _.isFunction(protocol) ? options.protocol(req) : (options.protocol() || "http");
+    var upLink = urlgrey([protocol, "://", host].join(""))
+      .hostname(host)
+      .path(req.url)
+      .parent()
+      .toString();
+    hyperjson.link("up", upLink);
+    obj = hyperjson.toObject();
+  }
 
-var send = function(req, res, jsonObj, options) {
-  if (!(jsonObj instanceof HyperJson)) {
-    throw new Error("send is for hyperjson objects only");
-  }
-  if (options.defaultLinks){
-    addDefaultLinks(req, res, jsonObj, options);
-  }
-  res.setHeader("content-type", "application/json");
-  var body = JSON.stringify(jsonObj.toObject());
+  var body = JSON.stringify(obj);
+  res.setHeader("content-type", "application/json; charset=utf-8");
   res.setHeader("content-length", Buffer.byteLength(body));
   res.end(body);
-};
-
-var addDefaultLinks = function(req, res, json, options) {
-  var current, up;
-  if (json instanceof HyperJson) {
-    current = json.toObject();
-  } else {
-    current = json;
-  }
-  if (!current._links || !current._links.up) {
-    try {
-      var host = 'localhost';
-      if (!!req.headers.host){
-        host = req.headers.host;
-      }
-      var protocol = options.protocol;
-      if (_.isFunction(protocol)){
-        protocol = protocol(req);
-      }
-      var base = protocol + 
-        '://' +
-        (req.headers.host || 'localhost');
-      up = urlgrey(base)
-                .hostname(req.headers.host || 'localhost')
-                .path(req.url)
-                .parent()
-                .toString();
-      json.link("up", up);
-    } catch (ex) {
-      if (ex.message !== "The current path has no parent path") {
-        throw ex;
-      }
-    }
-  }
-  return current;
 };
 
 var factory = function(options){
