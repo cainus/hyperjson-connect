@@ -38,9 +38,9 @@
     "jshint": "2.3.0"
   },
   "dependencies": {
-    "hyperjson": "0.0.3",
-    "underscore": "1.5.2",
-    "urlgrey": "0.3.3"
+    "hyperjson": "0.0.4",
+    "urlgrey": "0.3.3",
+    "lodash": "3.7.0"
   },
   "homepage": "https://github.com/cainus/hyperjson-connect",
   "directories": {

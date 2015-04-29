@@ -1,5 +1,5 @@
 var HyperJson = require("hyperjson");
-var _ = require("underscore");
+var _ = require("lodash");
 
 var HyperJsonCollection = function(obj, key) {
   if (_.isArray(obj) && key) {

@@ -1,6 +1,6 @@
 var HyperJson = require("hyperjson");
 var urlgrey = require("urlgrey");
-var _ = require("underscore");
+var _ = require("lodash");
 var HyperJsonCollection = require('./HyperJsonCollection');
 
 var send = function(req, res, hyperjson, options) {
