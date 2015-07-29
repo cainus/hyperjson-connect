@@ -1,6 +1,6 @@
 {
   "name": "hyperjson-connect",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "connect middleware for hyperjson support",
   "main": "index.js",
   "scripts": {
@@ -39,7 +39,7 @@
   },
   "dependencies": {
     "hyperjson": "0.0.5",
-    "urlgrey": "0.3.3",
+    "urlgrey": "0.4.0",
     "lodash": "3.7.0"
   },
   "homepage": "https://github.com/cainus/hyperjson-connect",
