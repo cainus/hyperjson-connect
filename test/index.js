@@ -175,6 +175,39 @@ describe("the middleware", function(){
     });
   });
 
+  describe("options.beforeSend", function () {
+    var res, obj, body;
+
+    function beforeSend (_res, _obj, _body) {
+      res = _res;
+      obj = _obj;
+      body = _body;
+    }
+
+
+    beforeEach(function (done) {
+      app = express();
+      app.use(hyperjson({beforeSend: beforeSend}));
+      app.get("/", function (req, res) {
+        setup(res);
+      });
+      server = http.createServer(app).listen(port, done);
+    });
+
+    afterEach(function (done) {
+      server.close(done);
+    });
+
+    it("is passed the response object, the response body as an object, and the response body as a string", function (done) {
+      request({uri: baseUrl}, function (err, theResponse, theBody) {
+        (res instanceof http.ServerResponse).should.equal(true);
+        theBody.should.equal(body);
+        JSON.parse(theBody).should.eql(obj);
+        done();
+      });
+    });
+  });
+
 
   describe("with express", function(){
     beforeEach(function(done){
