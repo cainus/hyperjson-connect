@@ -21,6 +21,11 @@ var send = function(req, res, hyperjson, options) {
   var body = JSON.stringify(obj);
   res.setHeader("content-type", "application/json");
   res.setHeader("content-length", Buffer.byteLength(body));
+
+  if (_.isFunction(options.beforeSend)) {
+    options.beforeSend(res, obj, body);
+  }
+
   res.end(body);
 };
 
