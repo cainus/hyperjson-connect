@@ -23,7 +23,7 @@ var send = function(req, res, hyperjson, options) {
   res.setHeader("content-length", Buffer.byteLength(body));
 
   if (_.isFunction(options.beforeSend)) {
-    options.beforeSend(res, obj, body);
+    options.beforeSend(req, res, obj, body);
   }
 
   res.end(body);

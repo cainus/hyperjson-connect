@@ -176,9 +176,10 @@ describe("the middleware", function(){
   });
 
   describe("options.beforeSend", function () {
-    var res, obj, body;
+    var req, res, obj, body;
 
-    function beforeSend (_res, _obj, _body) {
+    function beforeSend (_req, _res, _obj, _body) {
+      req = _req;
       res = _res;
       obj = _obj;
       body = _body;
@@ -200,6 +201,7 @@ describe("the middleware", function(){
 
     it("is passed the response object, the response body as an object, and the response body as a string", function (done) {
       request({uri: baseUrl}, function (err, theResponse, theBody) {
+        (req instanceof http.IncomingMessage).should.equal(true);
         (res instanceof http.ServerResponse).should.equal(true);
         theBody.should.equal(body);
         JSON.parse(theBody).should.eql(obj);
